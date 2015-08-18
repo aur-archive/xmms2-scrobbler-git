@@ -1,0 +1,50 @@
+post_install() {
+  cat << _EOF
+
+      Usage
+      -----
+
+      First, you need to set up XMMS2-Scrobbler's config files.
+      Config values that are specific to the AudioScrobbler server go in
+      ~/.config/xmms2/clients/xmms2-scrobbler/$SERVER_NAME/config.
+      You will usually have .../clients/xmms2-scrobbler/lastfm/config
+      and maybe .../clients/xmms2-scrobbler/librefm/config.
+
+      These server-specific config files contain your username and password
+      and the URL to use:
+
+          mkdir ~/.config/xmms2/clients/xmms2-scrobbler/lastfm
+          
+      Change lastfm to librefm if necessary.
+      Than edit ~/.config/xmms2/clients/xmms2-scrobbler/lastfm/config
+      It should look like this:
+      
+          user: foo
+          password: bar
+          handshake_url: http://post.audioscrobbler.com
+
+      For libre.fm, use
+          handshake_url: http://turtle.libre.fm
+
+      Optionally, if you're behind a proxy, you'll need to tell XMMS2-Scrobbler
+      about that proxy. This information applies to all servers and so goes in
+      .../clients/xmms2-scrobbler/lastfm/config.
+
+          echo -e "proxy: my.proxy\nproxy_port: 8080\n" >> \ 
+            ~/.config/xmms2/clients/xmms2-scrobbler/lastfm/config
+
+      Next, create a symlink to the script in ~/.config/xmms2/startup.d.
+      This will make xmms2d start xmms2-scrobbler on startup. When xmms2d is
+      killed, xmms2-scrobbler will exit automatically.
+
+      Finally, create a queue file:
+          touch ~/.config/xmms2/clients/xmms2-scrobbler/lastfm/queue
+
+      In case anything doesn't work as it should, have a look at
+      ~/.config/xmms2/clients/xmms2-scrobbler/logfile.log.
+_EOF
+}
+
+post_upgrade() {
+  post_install
+}
